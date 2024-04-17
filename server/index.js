@@ -416,7 +416,7 @@ imageNames = imageNames.filter(item => !item.includes('disc_fragment_5'));
 const respawn = ['clock', 'compass', 'echo_shard', 'recovery_compass', 'respawn_anchor'];
 imageNames = imageNames.filter(item => !respawn.includes(item));
 
-const mobInteraction = ['lead', 'name_tag', 'shears'];
+const mobInteraction = ['lead'];
 imageNames = imageNames.filter(item => !mobInteraction.includes(item));
 
 const mobProducts = ['egg', 'feather', 'goat_horn', 'string', 'rotten_flesh'];
