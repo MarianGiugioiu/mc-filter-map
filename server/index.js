@@ -6,10 +6,6 @@ const imagesDir = path.join(__dirname, '../public', 'stackable-items');
 const imageFiles = fs.readdirSync(imagesDir);
 let imageNames = imageFiles.map(file => path.parse(file).name);
 
-// console.log(imageNames);
-// const ores = imageNames.filter(item => item.includes('_ore'));
-// imageNames = imageNames.filter(item => !item.includes('_ore'));
-
 const dye = imageNames.filter(item => item.includes('_dye'));
 imageNames = imageNames.filter(item => !item.includes('_dye'));
 
@@ -273,6 +269,9 @@ imageNames = imageNames.filter(item => !item.includes('crimson'));
 const warped = imageNames.filter(item => item.includes('warped'));
 imageNames = imageNames.filter(item => !item.includes('warped'));
 
+const wood = ['stick', 'ladder', "scaffolding"];
+imageNames = imageNames.filter(item => !wood.includes(item));
+
 const chorus = imageNames.filter(item => item.includes('chorus'));
 imageNames = imageNames.filter(item => !item.includes('chorus'));
 
@@ -287,6 +286,9 @@ imageNames = imageNames.filter(item => !item.includes('spore_blossom'));
 
 const lilyPad = imageNames.filter(item => item.includes('lily_pad'));
 imageNames = imageNames.filter(item => !item.includes('lily_pad'));
+
+const deadBush = imageNames.filter(item => item.includes('dead_bush'));
+imageNames = imageNames.filter(item => !item.includes('dead_bush'));
 
 const fern = imageNames.filter(item => item.includes('fern'));
 imageNames = imageNames.filter(item => !item.includes('fern'));
@@ -333,6 +335,9 @@ imageNames = imageNames.filter(item => !item.includes('lantern'));
 const mushroom = imageNames.filter(item => item.includes('mushroom'));
 imageNames = imageNames.filter(item => !item.includes('mushroom'));
 
+const magma = imageNames.filter(item => item.includes('magma'));
+imageNames = imageNames.filter(item => !item.includes('magma'));
+
 const wart = imageNames.filter(item => item.includes('wart'));
 imageNames = imageNames.filter(item => !item.includes('wart'));
 
@@ -345,7 +350,7 @@ imageNames = imageNames.filter(item => !item.includes('blaze'));
 const spider = imageNames.filter(item => item.includes('spider_eye'));
 imageNames = imageNames.filter(item => !item.includes('spider_eye'));
 
-const ingredients = ["rabbit_foot", "glistering_melon_slice", "pufferfish", "magma_cream", "ghast_tear", "phantom_membrane"];
+const ingredients = ["rabbit_foot", "glistering_melon_slice", "pufferfish", "ghast_tear", "phantom_membrane"];
 imageNames = imageNames.filter(item => !ingredients.includes(item));
 
 const honey = imageNames.filter(item => item.includes('honey'));
@@ -359,6 +364,9 @@ imageNames = imageNames.filter(item => !item.includes('sponge'));
 
 const flint = imageNames.filter(item => item.includes('flint'));
 imageNames = imageNames.filter(item => !item.includes('flint'));
+
+const tnt = ['gunpowder', 'tnt'];
+imageNames = imageNames.filter(item => !tnt.includes(item));
 
 const rabbitHide = imageNames.filter(item => item.includes('rabbit_hide'));
 imageNames = imageNames.filter(item => !item.includes('rabbit_hide'));
@@ -375,17 +383,50 @@ imageNames = imageNames.filter(item => !item.includes('book'));
 const ender = imageNames.filter(item => item.includes('ender'));
 imageNames = imageNames.filter(item => !item.includes('ender'));
 
-const bench = ["barrel", "blast_furnace", "brewing_stand", "cartography_table", "cauldron", "composter", "fletching_table", "grindstone", "lectern", "loom", "smithing_table", "smoker", "stonecutter"];
+const bench = ['crafting_table', 'furnace', 'enchanting_table', 'lodestone', "barrel", "blast_furnace", "brewing_stand", "cartography_table", "cauldron", "composter", "fletching_table", "grindstone", "lectern", "loom", "smithing_table", "smoker", "stonecutter"];
 imageNames = imageNames.filter(item => !bench.includes(item));
 
-const mechanics = ["piston", "sticky_piston", "observer", 'hopper', 'dropper', 'dispenser', "repeater", "comparator", 'jukebox', 'note_block', 'tripwire_hook', 'tripwire_hook', "target"];
-imageNames = imageNames.filter(item => !mechanics.includes(item));
-// for (let item of ingredients) {
-//   if (imageNames.indexOf(item) ===-1) {
-//     console.log(item);
-//   }
-// }
+const anvil = imageNames.filter(item => item.includes('anvil'));
+imageNames = imageNames.filter(item => !item.includes('anvil'));
 
-// console.log(seeds);
-log(imageNames)
-log(imageNames.length)
+const mechanics = ['lever', "piston", "sticky_piston", "observer", 'hopper', 'dropper', 'dispenser', "repeater", "comparator", 'jukebox', 'note_block', 'tripwire_hook', 'daylight_detector', "target"];
+imageNames = imageNames.filter(item => !mechanics.includes(item));
+
+const rod = imageNames.filter(item => item.includes('rod'));
+imageNames = imageNames.filter(item => !item.includes('rod'));
+
+const arrow = imageNames.filter(item => item.includes('arrow'));
+imageNames = imageNames.filter(item => !item.includes('arrow'));
+
+const beacon = ['nether_star', 'beacon'];
+imageNames = imageNames.filter(item => !beacon.includes(item));
+
+const dragon = ['dragon_egg', 'dragon_breath', "end_crystal"];
+imageNames = imageNames.filter(item => !dragon.includes(item));
+
+const water = ['conduit', 'heart_of_the_sea', "scute", 'sea_pickle', 'nautilus_shell'];
+imageNames = imageNames.filter(item => !water.includes(item));
+
+const map = imageNames.filter(item => item.includes('map'));
+imageNames = imageNames.filter(item => !item.includes('map'));
+
+const discFragment = imageNames.filter(item => item.includes('disc_fragment_5'));
+imageNames = imageNames.filter(item => !item.includes('disc_fragment_5'));
+
+const respawn = ['clock', 'compass', 'echo_shard', 'recovery_compass', 'respawn_anchor'];
+imageNames = imageNames.filter(item => !respawn.includes(item));
+
+const mobInteraction = ['lead', 'name_tag', 'shears'];
+imageNames = imageNames.filter(item => !mobInteraction.includes(item));
+
+const mobProducts = ['egg', 'feather', 'goat_horn', 'string', 'rotten_flesh'];
+imageNames = imageNames.filter(item => !mobProducts.includes(item));
+
+const silktouch = ['frogspawn', 'cobweb', "beehive", 'bee_nest'];
+imageNames = imageNames.filter(item => !silktouch.includes(item));
+
+const decorations = ['armor_stand', 'bell', 'bowl', 'flower_pot', 'painting'];
+imageNames = imageNames.filter(item => !decorations.includes(item));
+
+const experience = imageNames.filter(item => item.includes('experience'));
+imageNames = imageNames.filter(item => !item.includes('experience'));
