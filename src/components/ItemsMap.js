@@ -1,6 +1,6 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import * as THREE from 'three';
-import { Environment, Grid, OrbitControls, Image, Text, useCursor, Html } from "@react-three/drei";
+import { Environment, Grid, OrbitControls, Image, Text } from "@react-three/drei";
 import ItemsManager from "../utils/items-manager";
 
 export const ItemsMap = () => {
@@ -33,7 +33,6 @@ export const ItemsMap = () => {
   })
 
   function generateItemPosition(lane, side, index) {
-    const r = (index + 1) % 8;
     const c = Math.floor(index / 8);
     const x = -8.25 + lane * 6 + (side ? 3.5 : 0); 
     const z = 3.75 - 0.5 * index - c / 2;
