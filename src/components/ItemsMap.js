@@ -1,50 +1,73 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import * as THREE from 'three';
-import { Environment, Grid, OrbitControls, Image, Text } from "@react-three/drei";
-import ItemsManager from "../utils/items-manager";
+import { Environment, Grid, OrbitControls, Image, Text, OrthographicCamera } from "@react-three/drei";
+import { useThree, useFrame } from '@react-three/fiber';
 
-export const ItemsMap = () => {
+export const ItemsMap = (props) => {
+  const { searchText } = props;
   const [hoveredImage, setHoveredImage] = useState(null);
   const [hoveredImageSide, setHoveredImageSide] = useState(0);
   const [hoverTextBackgoundSize, setHoverTextBackgoundSize] = useState([0, 0]);
-  const items = [
-    [[], []],
-    [[], []],
-    [[], []]
-  ]
-
-  items.map((lane, laneIndex) => {
-    lane.map((side, sideIndex) => {
-      for (let i = 0; i < 60; i++) {
-        side.push({
-          imageUrl: 'https://source.unsplash.com/random/256x256',
-          text: 'Iron ingot'
-        })
-      }
-    })
-  })
-
-  items.map((lane, laneIndex) => {
-    lane.map((side, sideIndex) => {
-      side.map((item, itemIndex) => {
-        item.position = generateItemPosition(laneIndex, sideIndex, itemIndex);
-      })
-    })
-  })
-
-  function generateItemPosition(lane, side, index) {
-    const c = Math.floor(index / 8);
-    const x = -8.25 + lane * 6 + (side ? 3.5 : 0); 
-    const z = 3.75 - 0.5 * index - c / 2;
-    return [x, 0, z]
-  }
-
-  const itemsManager = new ItemsManager();
-  // const items = itemsManager.readItems();
-  // itemsManager.writeItems(items);
+  const [items, setItems] = useState(null);
+  const { camera } = useThree();
+  const [foundItem, setFoundItem] = useState(null);
+  const initialPosition = useRef([...camera.position]);
 
   useEffect(() => {
-  }, [])
+    if (items && items.length) {
+      let foundItem1 = items[0][0].find(item => item.text === searchText);
+      if (foundItem1) {
+        setFoundItem(foundItem1);
+        const targetPosition = foundItem1.position;
+        const [x, y, z] = targetPosition;
+        console.log(x, y, z);
+        camera.position.set(x, y + 12, z); // Adjust the height offset as needed
+        camera.lookAt(x, y, z);
+        // camera.position.lerp(foundItem.position, 0.05);
+      }
+    }
+  }, [searchText])
+
+  useEffect(() => {
+    const generateItemPosition = (lane, side, index) =>  {
+      const c = Math.floor(index / 8);
+      const x = -8.25 + lane * 6 + (side ? 3.5 : 0); 
+      const z = 3.75 - 0.5 * index - c / 2;
+      return [x, 0, z]
+    }
+    const fetchJsonData = async () => {
+      try {
+        const response = await fetch('data/items.json',
+        {
+          headers : { 
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+           }
+        }
+      );
+        let data = await response.json();
+        if (data && data.length) {
+          data = data.map((lane, laneIndex) => {
+            return lane.map((side, sideIndex) => {
+              return side.map((item, itemIndex) => {
+                const newItem = {
+                  imageUrl: `/stackable-items/${item}.png`,
+                  text: item,
+                  position: generateItemPosition(laneIndex, sideIndex, itemIndex)
+                }
+                return newItem
+              })
+            })
+          })
+          setItems(data);
+        }
+      } catch (error) {
+        console.error('Error fetching JSON:', error);
+      }
+    };
+
+    fetchJsonData();
+  }, []);
 
   function updateHoverTextBackgoundSize(text) {
     const size = text.geometry.boundingBox;
@@ -56,10 +79,10 @@ export const ItemsMap = () => {
       <Environment preset="sunset"/>
       <ambientLight intensity={0.1} />
       <pointLight position={[10, 10, 10]} />
-      <OrbitControls enableRotate={false}/>
+      <OrbitControls enableRotate={true}/>
       {/* <Grid infiniteGrid /> */}
       {
-        items.map((lane, laneIndex) =>  (
+        items && items.map((lane, laneIndex) =>  (
           <group key={laneIndex}>
             {
               lane.map((side, sideIndex) => (
@@ -116,14 +139,14 @@ export const ItemsMap = () => {
       }
       {hoveredImage && (
         <group>
-          <mesh position={[hoveredImage.position[0] + (hoveredImageSide ? -1 : 1) * (0.5 + hoverTextBackgoundSize[0]) / 2, 0, hoveredImage.position[2]]}>
+          <mesh position={[hoveredImage.position[0] + (hoveredImageSide ? -1 : 1) * (0.5 + hoverTextBackgoundSize[0]) / 2, 1, hoveredImage.position[2]]}>
             <boxGeometry args={[hoverTextBackgoundSize[0], 0, hoverTextBackgoundSize[1]]} />
             <meshBasicMaterial color="gray" transparent opacity={0.8} />
           </mesh>
           <Text 
-            position={[hoveredImage.position[0] + ((hoveredImageSide ? -1 : 1) * 0.25), 0, hoveredImage.position[2]]}
+            position={[hoveredImage.position[0] + ((hoveredImageSide ? -1 : 1) * 0.25), 1, hoveredImage.position[2]]}
             rotation={[-Math.PI / 2, 0, 0]}
-            color="black"
+            color="red"
             fontSize={0.4}
             anchorX={hoveredImageSide ? 'right' : 'left'}
             anchorY="middle"
