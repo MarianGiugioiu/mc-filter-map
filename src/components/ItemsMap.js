@@ -48,11 +48,11 @@ export const ItemsMap = (props) => {
                           onPointerOver={() => {setHoveredImage(item); setHoveredImageSide(sideIndex);}}
                           onPointerOut={() => setHoveredImage(null)}
                         >
-                          <Image url={item.imageUrl}
+                          {/* <Image url={item.imageUrl}
                             position={item.position}
                             scale={[0.5, 0.5, 0.5]}
                             // rotation={[-Math.PI / 2, 0, 0]}
-                          />
+                          /> */}
                           <Text 
                             position={[item.position[0] + (sideIndex ? 1 : -1) * 0.5, item.position[1], item.position[2]]}
                             // rotation={[-Math.PI / 2, 0, 0]}
